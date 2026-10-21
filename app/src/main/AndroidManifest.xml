@@ -17,10 +17,7 @@
         android:theme="@style/Theme.DeliveryApp"
         tools:targetApi="31">
 
-        <!-- ✅ API Key de Google Maps -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDGRBd1vGi5FpwVQi2vSoBTElH1XXWXlXg" />
+
 
         <activity
             android:name=".MainActivity"
