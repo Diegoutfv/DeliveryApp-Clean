@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.deliveryapp.presentation.menu.MenuScreen
+import com.example.deliveryapp.presentation.tracking.TrackingScreen
 import com.example.deliveryapp.ui.theme.DeliveryAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MenuScreen()
+                    TrackingScreen(orderId = "order_123")   // ← Nueva línea temporal
                 }
             }
         }
