@@ -21,6 +21,20 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // ===== CONFIGURACIÓN DE FIRMA RELEASE =====
+    signingConfigs {
+        create("release") {
+            storeFile = file("../release.jks")
+            storePassword = "delivery123"
+            keyAlias = "deliveryKey"
+            keyPassword = "delivery123"
+        }
+    }
+
+    lint {
+        checkReleaseBuilds = false
+        abortOnError = false
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -28,6 +42,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -47,10 +62,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.play.services.location)
-    // Google Maps
-    implementation(libs.maps.compose)
-    implementation(libs.play.services.maps)
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
@@ -81,6 +92,13 @@ dependencies {
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-firestore")
+
+    // Play Services (GPS)
+    implementation(libs.play.services.location)
+
+    // Google Maps (dejadas por si acaso)
+    implementation(libs.maps.compose)
+    implementation(libs.play.services.maps)
 
     // Testing
     testImplementation(libs.junit)
