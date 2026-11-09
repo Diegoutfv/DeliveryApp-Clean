@@ -1,5 +1,6 @@
 package com.example.deliveryapp.presentation.cart
 
+import com.example.deliveryapp.ui.components.formatMxn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -101,7 +102,7 @@ fun CartScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = "$" + String.format("%.2f", total),
+                            text = formatMxn(total),
                             style = MaterialTheme.typography.headlineMedium,
                             color = red
                         )

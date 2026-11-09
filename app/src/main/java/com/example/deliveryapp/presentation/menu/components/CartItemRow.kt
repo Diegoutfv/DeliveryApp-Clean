@@ -1,5 +1,6 @@
 package com.example.deliveryapp.presentation.menu.components
 
+import com.example.deliveryapp.ui.components.formatMxn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -51,7 +52,7 @@ fun CartItemRow(
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                text = "$" + String.format("%.2f", item.subtotal),
+                text = formatMxn(item.subtotal),
                 style = MaterialTheme.typography.bodyLarge,
                 color = red
             )

@@ -1,5 +1,6 @@
 package com.example.deliveryapp.presentation.menu.components
 
+import com.example.deliveryapp.ui.components.formatMxn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -85,7 +86,7 @@ fun DishItem(
             )
             Spacer(Modifier.height(6.dp))
             Text(
-                text = "$" + String.format("%.2f", dish.price),
+                text = formatMxn(dish.price),
                 style = MaterialTheme.typography.titleMedium,
                 color = red
             )

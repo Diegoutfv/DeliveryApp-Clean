@@ -28,18 +28,18 @@ class DeliveryRepositoryImpl @Inject constructor(
         val pizza = DishCategory.PIZZA.name
         val drink = DishCategory.DRINK.name
         val initialDishes = listOf(
-            DishEntity(101, "Rossa Clásica", "Salsa de tomate, mozzarella fresca y albahaca", 11.50, "", pizza),
-            DishEntity(102, "Pepperoni Fuego", "Pepperoni artesanal, mozzarella y orégano", 13.00, "", pizza),
-            DishEntity(103, "Cuatro Quesos", "Mozzarella, gorgonzola, parmesano y provolone", 14.50, "", pizza),
-            DishEntity(104, "Diavola", "Salami picante, chile calabrés y miel", 14.00, "", pizza),
-            DishEntity(105, "Hawaiana Tropical", "Jamón, piña asada y mozzarella", 12.50, "", pizza),
-            DishEntity(106, "Verde Hortelana", "Pimiento, champiñón, aceituna y rúcula", 12.00, "", pizza),
-            DishEntity(201, "Limonada Rosa", "Limón natural con frambuesa y hielo", 3.50, "", drink),
-            DishEntity(202, "Cola Clásica", "Refresco de cola bien frío, 500 ml", 2.50, "", drink),
-            DishEntity(203, "Té Helado de Durazno", "Té negro, durazno y un toque de menta", 3.00, "", drink),
-            DishEntity(204, "Naranjada Fresca", "Jugo de naranja exprimido al momento", 3.50, "", drink),
-            DishEntity(205, "Agua Mineral", "Agua con gas, 500 ml", 2.00, "", drink),
-            DishEntity(206, "Cerveza Artesanal Roja", "Ale ámbar de la casa, 355 ml", 4.50, "", drink)
+            DishEntity(101, "Rossa Clásica", "Salsa de tomate, mozzarella fresca y albahaca", 189.0, "", pizza),
+            DishEntity(102, "Pepperoni Fuego", "Pepperoni artesanal, mozzarella y orégano", 199.0, "", pizza),
+            DishEntity(103, "Cuatro Quesos", "Mozzarella, gorgonzola, parmesano y provolone", 219.0, "", pizza),
+            DishEntity(104, "Diavola", "Salami picante, chile calabrés y miel", 209.0, "", pizza),
+            DishEntity(105, "Hawaiana Tropical", "Jamón, piña asada y mozzarella", 189.0, "", pizza),
+            DishEntity(106, "Verde Hortelana", "Pimiento, champiñón, aceituna y rúcula", 179.0, "", pizza),
+            DishEntity(201, "Limonada Rosa", "Limón natural con frambuesa y hielo", 45.0, "", drink),
+            DishEntity(202, "Cola Clásica", "Refresco de cola bien frío, 500 ml", 38.0, "", drink),
+            DishEntity(203, "Té Helado de Durazno", "Té negro, durazno y un toque de menta", 42.0, "", drink),
+            DishEntity(204, "Naranjada Fresca", "Jugo de naranja exprimido al momento", 45.0, "", drink),
+            DishEntity(205, "Agua Mineral", "Agua con gas, 500 ml", 32.0, "", drink),
+            DishEntity(206, "Cerveza Artesanal Roja", "Ale ámbar de la casa, 355 ml", 69.0, "", drink)
         )
         // Reemplaza el menú anterior para que no queden platillos viejos
         dishDao.clearDishes()

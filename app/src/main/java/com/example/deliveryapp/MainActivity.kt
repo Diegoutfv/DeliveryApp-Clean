@@ -2,6 +2,7 @@ package com.example.deliveryapp
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -44,9 +45,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AppNavigation() {
-    var currentScreen by remember { mutableStateOf("home") }
+    var currentScreen by rememberSaveable { mutableStateOf("home") }
     val authViewModel: AuthViewModel = hiltViewModel()
     val isLoggedIn by authViewModel.isLoggedIn.collectAsState()
+
+    // Botón/gesto "atrás" de Android: desde cualquier pantalla regresa al inicio.
+    // Solo en el inicio (o sin sesión) sale de la app.
+    BackHandler(enabled = isLoggedIn && currentScreen != "home") {
+        currentScreen = "home"
+    }
 
     if (!isLoggedIn) {
         AuthScreen(onLoginSuccess = { })
