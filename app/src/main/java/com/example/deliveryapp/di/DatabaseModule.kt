@@ -25,7 +25,10 @@ object DatabaseModule {
             context,
             DeliveryDatabase::class.java,
             DeliveryDatabase.DATABASE_NAME
-        ).build()
+        )
+            // La app está en desarrollo: al subir de versión se recrea la base local
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides

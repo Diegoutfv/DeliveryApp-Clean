@@ -9,7 +9,7 @@ import com.example.deliveryapp.data.local.entity.DishEntity
 
 @Database(
     entities = [DishEntity::class, CartItemEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class DeliveryDatabase : RoomDatabase() {

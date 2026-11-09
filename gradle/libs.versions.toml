@@ -37,6 +37,7 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version = "21.3.0" }
 maps-compose = { group = "com.google.maps.android", name = "maps-compose", version = "4.3.3" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version = "18.2.0" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx" }
 
 
 # Lifecycle ViewModel Compose

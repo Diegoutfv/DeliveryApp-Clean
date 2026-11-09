@@ -1,143 +1,83 @@
 package com.example.deliveryapp.presentation.tracking
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import com.example.deliveryapp.ui.components.CircleIconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun TrackingScreen(
     orderId: String,
+    onBack: () -> Unit, // <-- Agregado para el botón de volver
     viewModel: TrackingViewModel = hiltViewModel()
 ) {
     val order by viewModel.orderState.collectAsState()
 
-    // Iniciar el rastreo al montar la pantalla
+    // Posición inicial de la cámara (CDMX)
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(LatLng(19.4326, -99.1332), 12f)
+    }
+
     LaunchedEffect(orderId) {
         viewModel.trackOrder(orderId)
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(24.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        if (order.lat == 0.0 && order.lng == 0.0) {
-            // Estado de carga mientras Firestore responde
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "Conectando con el repartidor...",
-                    style = MaterialTheme.typography.bodyLarge
+    // Animar la cámara cuando cambien las coordenadas
+    LaunchedEffect(order.lat, order.lng) {
+        if (order.lat != 0.0 && order.lng != 0.0) {
+            cameraPositionState.animate(
+                com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(
+                    LatLng(order.lat, order.lng),
+                    16f
+                )
+            )
+        }
+    }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        GoogleMap(
+            modifier = Modifier.fillMaxSize(),
+            cameraPositionState = cameraPositionState
+        ) {
+            if (order.lat != 0.0 && order.lng != 0.0) {
+                Marker(
+                    state = MarkerState(position = LatLng(order.lat, order.lng)),
+                    title = order.driverName.ifEmpty { "Repartidor" },
+                    snippet = "Estado: ${order.status.ifEmpty { "Desconocido" }}"
                 )
             }
-        } else {
-            // Tarjeta con los datos en vivo
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    Text(
-                        text = "🛵 Rastreo en Vivo",
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-
-                    Text(
-                        text = "Pedido: $orderId",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text(
-                                text = "Repartidor asignado:",
-                                style = MaterialTheme.typography.labelMedium
-                            )
-                            Text(
-                                text = order.driverName.ifEmpty { "Cargando..." },
-                                style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
-
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text(
-                                text = "Estado del pedido:",
-                                style = MaterialTheme.typography.labelMedium
-                            )
-                            Text(
-                                text = order.status.ifEmpty { "Desconocido" },
-                                style = MaterialTheme.typography.titleMedium,
-                                color = if (order.status == "IN_DELIVERY") Color(0xFF4CAF50) else MaterialTheme.colorScheme.onSurface,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
-
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text(
-                                text = "Ubicación actual (GPS):",
-                                style = MaterialTheme.typography.labelMedium
-                            )
-                            Text(
-                                text = "Latitud: ${order.lat}",
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                            Text(
-                                text = "Longitud: ${order.lng}",
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        }
-                    }
-                }
-            }
         }
+
+        // Botón para regresar del mapa al Home
+        CircleIconButton(
+            icon = Icons.AutoMirrored.Filled.ArrowBack,
+            contentDescription = "Volver",
+            onClick = onBack,
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .statusBarsPadding()
+                .padding(16.dp)
+                .background(MaterialTheme.colorScheme.background, CircleShape)
+        )
     }
 }

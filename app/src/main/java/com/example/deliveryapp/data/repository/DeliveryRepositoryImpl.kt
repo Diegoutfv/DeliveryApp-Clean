@@ -6,6 +6,7 @@ import com.example.deliveryapp.data.local.entity.CartItemEntity
 import com.example.deliveryapp.data.local.entity.DishEntity
 import com.example.deliveryapp.domain.model.CartItem
 import com.example.deliveryapp.domain.model.Dish
+import com.example.deliveryapp.domain.model.DishCategory
 import com.example.deliveryapp.domain.repository.DeliveryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -24,14 +25,24 @@ class DeliveryRepositoryImpl @Inject constructor(
 
     override suspend fun loadDishesFromApi() {
         // Datos precargados localmente (por ahora, sin Retrofit)
+        val pizza = DishCategory.PIZZA.name
+        val drink = DishCategory.DRINK.name
         val initialDishes = listOf(
-            DishEntity(1, "Pizza Margarita", "Deliciosa pizza clásica", 12.5, ""),
-            DishEntity(2, "Hamburguesa", "Carne jugosa con queso", 8.0, ""),
-            DishEntity(3, "Tacos al Pastor", "Tacos tradicionales", 6.5, ""),
-            DishEntity(4, "Refresco", "Bebida fría", 2.0, ""),
-            DishEntity(5, "Postre", "Dulce tentación", 4.5, ""),
-            DishEntity(6, "Ensalada César", "Fresca y saludable", 7.0, "")
+            DishEntity(101, "Rossa Clásica", "Salsa de tomate, mozzarella fresca y albahaca", 11.50, "", pizza),
+            DishEntity(102, "Pepperoni Fuego", "Pepperoni artesanal, mozzarella y orégano", 13.00, "", pizza),
+            DishEntity(103, "Cuatro Quesos", "Mozzarella, gorgonzola, parmesano y provolone", 14.50, "", pizza),
+            DishEntity(104, "Diavola", "Salami picante, chile calabrés y miel", 14.00, "", pizza),
+            DishEntity(105, "Hawaiana Tropical", "Jamón, piña asada y mozzarella", 12.50, "", pizza),
+            DishEntity(106, "Verde Hortelana", "Pimiento, champiñón, aceituna y rúcula", 12.00, "", pizza),
+            DishEntity(201, "Limonada Rosa", "Limón natural con frambuesa y hielo", 3.50, "", drink),
+            DishEntity(202, "Cola Clásica", "Refresco de cola bien frío, 500 ml", 2.50, "", drink),
+            DishEntity(203, "Té Helado de Durazno", "Té negro, durazno y un toque de menta", 3.00, "", drink),
+            DishEntity(204, "Naranjada Fresca", "Jugo de naranja exprimido al momento", 3.50, "", drink),
+            DishEntity(205, "Agua Mineral", "Agua con gas, 500 ml", 2.00, "", drink),
+            DishEntity(206, "Cerveza Artesanal Roja", "Ale ámbar de la casa, 355 ml", 4.50, "", drink)
         )
+        // Reemplaza el menú anterior para que no queden platillos viejos
+        dishDao.clearDishes()
         dishDao.insertDishes(initialDishes)
     }
 
@@ -89,7 +100,8 @@ private fun DishEntity.toDomain() = Dish(
     name = name,
     description = description,
     price = price,
-    imageUrl = imageUrl
+    imageUrl = imageUrl,
+    category = runCatching { DishCategory.valueOf(category) }.getOrDefault(DishCategory.PIZZA)
 )
 
 private fun CartItemEntity.toDomain() = CartItem(
