@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.example.deliveryapp.domain.model.Dish
 import com.example.deliveryapp.domain.model.DishCategory
 import com.example.deliveryapp.ui.components.AddButton
+import com.example.deliveryapp.ui.components.DishImage
 
 @Composable
 fun DishItem(
@@ -49,24 +50,7 @@ fun DishItem(
             .padding(14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(64.dp)
-                .clip(CircleShape)
-                .background(red.copy(alpha = 0.12f)),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = if (dish.category == DishCategory.DRINK) {
-                    Icons.Default.LocalDrink
-                } else {
-                    Icons.Default.LocalPizza
-                },
-                contentDescription = null,
-                tint = red,
-                modifier = Modifier.size(32.dp)
-            )
-        }
+        DishImage(dish = dish, modifier = Modifier.size(88.dp))
 
         Spacer(Modifier.width(14.dp))
 

@@ -33,6 +33,7 @@ import com.example.deliveryapp.ui.components.ScreenHeader
 @Composable
 fun CartScreen(
     onBack: () -> Unit,
+    onCheckout: () -> Unit,
     viewModel: CartViewModel = hiltViewModel()
 ) {
     val cartItems by viewModel.cartItems.collectAsState()
@@ -97,7 +98,7 @@ fun CartScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Total",
+                            text = "Subtotal",
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -108,11 +109,16 @@ fun CartScreen(
                         )
                     }
 
-                    Box(Modifier.padding(6.dp))
+                    Text(
+                        text = "Envío y método de pago al confirmar. Envío gratis desde $400 MXN.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 4.dp, bottom = 12.dp)
+                    )
 
                     PrimaryButton(
                         text = "Confirmar orden",
-                        onClick = { /* TODO: Checkout */ },
+                        onClick = onCheckout,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }

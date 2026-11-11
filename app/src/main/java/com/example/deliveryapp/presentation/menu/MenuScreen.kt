@@ -41,17 +41,23 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.deliveryapp.domain.model.DishCategory
 import com.example.deliveryapp.presentation.cart.CartViewModel
 import com.example.deliveryapp.presentation.menu.components.DishItem
+import com.example.deliveryapp.ui.components.PrimaryButton
 import com.example.deliveryapp.ui.components.ScreenHeader
+import com.example.deliveryapp.ui.components.formatMxn
+import androidx.compose.material.icons.filled.ShoppingCart
 import kotlinx.coroutines.launch
 
 @Composable
 fun MenuScreen(
     onBack: () -> Unit,
+    onOpenCart: () -> Unit,
     viewModel: MenuViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel()
 ) {
     val dishes by viewModel.dishes.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    val cartItems by cartViewModel.cartItems.collectAsState()
+    val cartTotal by cartViewModel.total.collectAsState()
 
     var selected by rememberSaveable { mutableStateOf(DishCategory.PIZZA.name) }
     val selectedCategory = DishCategory.valueOf(selected)
@@ -61,7 +67,23 @@ fun MenuScreen(
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        bottomBar = {
+            if (cartItems.isNotEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 12.dp)
+                ) {
+                    PrimaryButton(
+                        text = "Ver carrito (${cartItems.sumOf { it.quantity }}) · ${formatMxn(cartTotal)}",
+                        icon = Icons.Default.ShoppingCart,
+                        onClick = onOpenCart,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+        }
     ) { padding ->
         Column(
             modifier = Modifier

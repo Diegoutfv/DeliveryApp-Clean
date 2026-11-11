@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.example.deliveryapp.domain.model.CartItem
+import com.example.deliveryapp.ui.components.DishImage
 import com.example.deliveryapp.ui.components.QuantityStepper
 
 @Composable
@@ -46,6 +47,10 @@ fun CartItemRow(
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        DishImage(item.dish, Modifier.size(56.dp))
+
+        Spacer(Modifier.width(12.dp))
+
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = item.dish.name,

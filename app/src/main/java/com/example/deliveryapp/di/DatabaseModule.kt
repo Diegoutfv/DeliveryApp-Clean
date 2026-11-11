@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.deliveryapp.data.local.dao.CartItemDao
 import com.example.deliveryapp.data.local.dao.DishDao
+import com.example.deliveryapp.data.local.dao.OrderDao
 import com.example.deliveryapp.data.local.database.DeliveryDatabase
 import dagger.Module
 import dagger.Provides
@@ -41,5 +42,11 @@ object DatabaseModule {
     @Singleton
     fun provideCartItemDao(database: DeliveryDatabase): CartItemDao {
         return database.cartItemDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideOrderDao(database: DeliveryDatabase): OrderDao {
+        return database.orderDao()
     }
 }
